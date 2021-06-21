@@ -31,13 +31,6 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
           git-user-signingkey: true
           git-commit-gpgsign: true
-      -
-        name: Sign commit and push changes
-        run: |
-          echo foo > bar.txt
-          git add .
-          git commit -S -m "This commit is signed!"
-          git push
           
       - name: Running Workflow Sync
         uses: mo-auto/actions-sync-workflows@main
