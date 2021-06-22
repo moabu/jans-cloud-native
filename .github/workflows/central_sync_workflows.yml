@@ -12,15 +12,6 @@ on:
 jobs:
   All_Repos_Common_Workflows:
     runs-on: ubuntu-latest
-    env:
-      DRY_RUN: false
-      PULL_REQUEST: true
-      REPOSITORIES: |
-        JanssenProject/docker-jans-persistence-loader
-      WORKFLOW_FILES: |
-        .github/workflows/commit-check.yml
-        .github/workflows/central_code_quality_check.yml
-      COMMIT_MESSAGE: 'ci(workflows): sync workflows'
     steps:
       - name: Fetching Local Repository
         uses: actions/checkout@master
@@ -33,7 +24,15 @@ jobs:
           git-commit-gpgsign: true
           
       - name: Running Workflow Sync
+        env:
+          REPOSITORIES: |
+            JanssenProject/docker-jans-persistence-loader
+          WORKFLOW_FILES: |
+            .github/workflows/commit-check.yml
+            .github/workflows/central_code_quality_check.yml
+          GITHUB_TOKEN: ${{ secrets.MOWORKFLOWTOKEN }}
         run: |
+          echo 
           wget https://raw.githubusercontent.com/mo-auto/scripts/main/org_workflows_sync.sh
           chmod u+x org_workflows_sync.sh
           bash org_workflows_sync.sh
